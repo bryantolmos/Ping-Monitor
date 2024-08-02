@@ -1,39 +1,35 @@
 import pingparsing
 
-def ping_parse(ping_destination : str, ping_count : int) -> tuple[dict,list]:
-
-    """
-    Pings a host and returns a list of the ping results and ICMP replies
-
-    Arguements: 
-        ping_destination (str): the host name or IP address to ping
-        ping_count (int): the amount of pings to send
-
-    Returns:
-
-    """
-
+def ping_parse(ping_destination : str, ping_count : int) -> int:
     ping_parser = pingparsing.PingParsing()
     transmitter = pingparsing.PingTransmitter()
     transmitter.destination = ping_destination
     transmitter.count = ping_count
 
-    # initialize ping_results and icmp_replies_list
     ping_results = ping_parser.parse(transmitter.ping())
-    icmp_replies_list = []
+    icmp_replies_list = ping_results.icmp_replies
 
-    # iterate over ICMP replies and append to list
-    for icmp_replies in ping_results.icmp_replies:
-        icmp_replies_list.append(icmp_replies)
+    print(f"\nPing Results for {ping_destination}:")
+    print("-" * 40)
+    print(f"Packet Transmitted: {ping_results.packet_transmit}")
+    print(f"Packet Received: {ping_results.packet_receive}")
+    print(f"Packet Loss: {ping_results.packet_loss_rate:.2f}%")
+    print(f"Round Trip Time (ms):")
+    print(f"  Min: {ping_results.rtt_min:.2f}")
+    print(f"  Avg: {ping_results.rtt_avg:.2f}")
+    print(f"  Max: {ping_results.rtt_max:.2f}")
+    print(f"  Mdev: {ping_results.rtt_mdev:.2f}")
 
-    # optional save as json -----------------------------
-
-    #with open('ping_results.json', 'w') as file:
-    #    json.dump(ping_results.as_dict(), file, indent=4)
-    #with open('icmp_replies.json', 'w') as file:
-    #    json.dump(icmp_replies_list, file, indent=4)
+    print("\nICMP Replies:")
+    print("-" * 40)
+    for i, reply in enumerate(icmp_replies_list, start=1):
+        print(f"Reply {i}:")
+        print(f"  Destination: {reply['destination']}")
+        print(f"  Bytes: {reply['bytes']}")
+        print(f"  Sequence: {reply['icmp_seq']}")
+        print(f"  TTL: {reply['ttl']}")
+        print(f"  Time (ms): {reply['time']:.2f}")
+        print(f"  Duplicate: {reply['duplicate']}")
+        print("-" * 40)
     
-    # ---------------------------------------------------
-    
-    
-    return ping_results.as_dict(), icmp_replies_list
+    return 0
