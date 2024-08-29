@@ -29,7 +29,7 @@ The following metrics are collected and exported to Prometheus:
 
 1. Clone the repository:
     ```bash
-    git clone <https://github.com/bryantolmos/Ping-Monitor>
+    git clone <https://github.com/bryantolmos/Ping-Monitor.git>
     cd <repository-directory>
     ```
 
