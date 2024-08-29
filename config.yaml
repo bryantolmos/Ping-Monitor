@@ -1,0 +1,6 @@
+address1:
+  ip: 8.8.8.8
+  frequency: 1 # ping every 1 second
+address2:
+  ip: www.youtube.com
+  frequency: 1 # ping every 3 seconds
