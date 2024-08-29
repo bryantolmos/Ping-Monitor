@@ -3,4 +3,4 @@ address1:
   frequency: 1 # ping every 1 second
 address2:
   ip: www.youtube.com
-  frequency: 1 # ping every 3 seconds
+  frequency: 1 # ping every 1 seconds
