@@ -13,7 +13,6 @@ rtt_min = Gauge("rtt_min", "round trip time min in milliseconds",["server"])
 rtt_avg = Gauge("rtt_avg", "round trip time avg in milliseconds",["server"])
 rtt_max = Gauge("rtt_max", "round trip time max in milliseconds",["server"])
 rtt_mdev = Gauge("rtt_mdev", "round trip time population standard deviation",["server"])
-
 ping_success_rate = Gauge("ping_success_rate", "Ping success rate", ["server"])
 
 def parse_yaml(yaml_file_name: str) -> dict:
@@ -36,7 +35,6 @@ def ping_parse(ping_destination : str, frequency: int) -> None:
 
     successful_pings = 0
     total_pings = 0
-
 
     while True:
         ping_results = ping_parser.parse(transmitter.ping())
@@ -72,7 +70,6 @@ def ping_parse(ping_destination : str, frequency: int) -> None:
         ping_success_rate.labels(server=ping_destination).set(success_rate)
 
         time.sleep(frequency)
-
 
 def caller(config_yaml : str) -> None:
     script_dir = os.path.dirname(__file__)  # Get the directory where the script is located
