@@ -1,42 +1,66 @@
 # Ping Monitor
+
 ## Overview
-This program uses a YAML configuration file containing IP addresses and the amount of times to ping that target IP, the program performs ping test on each IP, saves the results to a yaml file, while using concurrent execution to handle multiple ping test, improving efficiency for large configurations
 
-## Usage
-### 1. Preparing a YAML Configuration File
-To set up your configuration file, follow these steps:
+This project is a ping monitoring tool that continuously pings specified IP addresses, parses the results, and exports the metrics to Prometheus. These metrics can then be visualized in Grafana. The tool is designed to run indefinitely, providing real-time monitoring of network performance and reliability.
 
-- **Address Keywords:** Define the target addresses by using keywords formatted as `address` followed by a unique identifier (e.g., numbers 1 to n).
-  - _Example:_ `address1:`
-- **IP Address Specification:** For each `address` keyword, specify the corresponding IP address of the target using the `ip` key.
-  - _Example:_ `ip: 8.8.8.8`
-- **Ping Count Configuration:** Lastly, set the number of pings to be sent to the target by including a `count` key with the desired value.
-  - _Example:_ `count: 5`
- 
-Assuming all steps were followed correctly your YAML configuration file should look like this
+## Metrics
+
+The following metrics are collected and exported to Prometheus:
+
+- **Packet Transmit**: Number of packets transmitted.
+- **Packet Receive**: Number of packets received.
+- **Packet Loss Rate**: Percentage of lost packets.
+- **RTT Min**: Minimum round-trip time in milliseconds.
+- **RTT Avg**: Average round-trip time in milliseconds.
+- **RTT Max**: Maximum round-trip time in milliseconds.
+- **RTT Mdev**: Population standard deviation of round-trip time.
+- **Ping Success Rate**: Percentage of successful pings.
+
+## Requirements
+
+- Python 3.x
+- `pingparsing` library
+- `PyYAML` library
+- `prometheus_client` library
+- Prometheus and Grafana for metrics collection and visualization
+
+## Installation
+
+1. Clone the repository:
+    ```bash
+    git clone <repository-url>
+    cd <repository-directory>
+    ```
+
+2. Install the required Python packages:
+    ```bash
+    pip install pingparsing pyyaml prometheus_client
+    ```
+
+3. Set up Prometheus and Grafana (refer to their respective documentation for installation).
+
+## Configuration
+
+Create a YAML configuration file (e.g., `config.yaml`) with the following structure:
+
 ```yaml
 address1:
-   ip: 8.8.8.8
-   count: 5
+  ip: "192.168.1.1"
+  frequency: 5  # Ping frequency in seconds
+
 address2:
-   ip: 1.1.1.1
-   count: 4
+  ip: "8.8.8.8"
+  frequency: 10
+
+# Add more addresses as needed
+
+## Configuration
 ```
- 
-### 2. Running the program 
-To run the program, follow these steps:
-- **Install required libraries:** Can be done with the following commands
-  ```
-  pip install pingparsing
-  ```
-  ```
-  pip install pyyaml
-  ```
-- **Call the function:** Use `caller()` and input your YAML configuration file
-  ```python
-  import pingmonitor
-  
-  pingmonitor.caller('config.yaml')
-  ```
-### 3. Results
-The program will generate YAML files containing ping results and ICMP replies for each IP address in the YAML configuration file, these files will be saved in the same directory where the scripts is executed
+## Usage
+
+To start the ping monitor run the `start()` function, this will not only start the ping monitor, but it will expose the metrics to port `8989`(default port), which will be scraped by promtheus. (`localhost:8989` must be added to the `prometheus.yml` file under `static_configs`)
+
+## Visualization
+
+Once prometheus is set up to scrape the metrics, We (I) use Graphana dashboards to visualize the collected metric which looks like:
