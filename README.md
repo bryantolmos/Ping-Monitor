@@ -30,7 +30,6 @@ The following metrics are collected and exported to Prometheus:
 1. Clone the repository:
     ```bash
     git clone <https://github.com/bryantolmos/Ping-Monitor.git>
-    cd <repository-directory>
     ```
 
 2. Install the required Python packages:
@@ -47,11 +46,11 @@ Create a YAML configuration file (e.g., `config.yaml`) with the following struct
 ```yaml
 address1:
   ip: "192.168.1.1"
-  frequency: 5  # Ping frequency in seconds
+  frequency: 1  # Ping frequency in seconds
 
 address2:
   ip: "8.8.8.8"
-  frequency: 10
+  frequency: 1
 
 # Add more addresses as needed
 ```
