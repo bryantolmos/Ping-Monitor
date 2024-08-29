@@ -54,8 +54,6 @@ address2:
   frequency: 10
 
 # Add more addresses as needed
-
-## Configuration
 ```
 ## Usage
 
